@@ -30,6 +30,9 @@ spring:
                 - '**/*.gson'
                 - 'logback.groovy'
                 - '*.properties'
+#    h2:
+#        console:
+#            enable: true
 management:
     endpoints:
         enabled-by-default: false
