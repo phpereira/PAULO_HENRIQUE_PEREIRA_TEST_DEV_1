@@ -1,8 +1,9 @@
 package backend
 
-import grails.gorm.transactions.Transactional
-
+import java.math.RoundingMode
 import java.time.LocalDateTime
+
+import grails.gorm.transactions.*
 
 @Transactional
 class StockService {
@@ -10,8 +11,6 @@ class StockService {
     def getStocks(String company, int hours) {
 
         long start = System.currentTimeMillis()
-        int stocksQuantity = 0;
-
         LocalDateTime dateRange = LocalDateTime.now().minusHours(hours)
 
         def stocks = Stock.executeQuery("SELECT s FROM Stock s, Company c " +
@@ -19,19 +18,35 @@ class StockService {
                 "AND c.name LIKE :company " +
                 "AND s.priceDate > :hours", [company: company, hours: dateRange])
 
-        println "\n"
         println "Quotes: "
+        stocks.forEach({ stock ->
+            println "Date: ${stock.priceDate} - Price: ${stock.price}"
+        })
 
-        stocks.each { stock ->
-            println "${stock.price}"
-            stocksQuantity++
-        }
+        float elapsedTime = (System.currentTimeMillis() - start);
+        println "Time elapsed: " + elapsedTime + " ms"
+        println "Quotes retrieved:" + stocks.size()
+    }
 
-        println "\n"
+    def findAllStocksByCompanyId(Serializable id) {
+        return Stock.executeQuery("SELECT s FROM Stock s WHERE s.company.id = :id", [id: id]).toList();
+    }
 
-        float elapsedTime = (System.currentTimeMillis() - start) / 1000F;
-        println "Time elapsed: " + elapsedTime + "\n"
-        println "Quotes retrieved: ${stocksQuantity} \n"
+    def findStocksPricesByCompany(Serializable id) {
+        return Stock.executeQuery("SELECT s.price FROM Stock s "
+                + "where s.company.id = :id",
+                [id: id]
+        ).toList();
+    }
 
+    def getStocksByCompany(String company) {
+        return Stock.findAll("from Stock s "
+                + "where s.company.name = :name",
+                [name: company]
+        ).toList();
+    }
+
+    def findAllCompanies() {
+        List<Company> companies = Company.executeQuery("SELECT c.id, c.name, c.segment FROM Company c")
     }
 }

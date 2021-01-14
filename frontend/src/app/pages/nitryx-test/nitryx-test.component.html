@@ -1,0 +1,16 @@
+<button type="button" (click)="listCompanies($event)">
+    List Companies
+</button>
+
+<table *ngIf="companies.length > 0" class="table-nitryx">
+    <tr>
+        <th>Name</th>
+        <th>Segment</th>
+        <th>Standard Deviation</th>
+    </tr>
+    <tr *ngFor="let company of companies">
+        <td>{{company.name}}</td>
+        <td>{{company.segment}}</td>
+        <td>{{company.sd}}</td>
+    </tr>
+</table>

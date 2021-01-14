@@ -8,6 +8,8 @@ grails:
             # Whether to translate GORM events into Reactor events
             # Disabled by default for performance reasons
             events: false
+    cors:
+        enabled: true
 info:
     app:
         name: '@info.app.name@'
@@ -30,9 +32,6 @@ spring:
                 - '**/*.gson'
                 - 'logback.groovy'
                 - '*.properties'
-#    h2:
-#        console:
-#            enable: true
 management:
     endpoints:
         enabled-by-default: false
