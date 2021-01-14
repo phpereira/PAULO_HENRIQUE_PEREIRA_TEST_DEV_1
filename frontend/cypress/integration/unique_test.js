@@ -9,6 +9,10 @@ No need to check all the data retrieved by the button pushing. Just a Company na
 describe('Test to be fulfilled by the candidate', () => {
   it('push the button implemented on task #3 and shows the company names', () => {
       cy.visit('http://localhost:4200')
-      expect(true).to.equal(false) //replace me !
+      cy.get('[data-cy=list-companies]').click()
+      cy.get('[data-cy=companies-names]').should('contain', 'Nitryx')
+      cy.get('[data-cy=companies-names]').should('contain', 'Amazon')
+      cy.get('[data-cy=companies-names]').should('contain', 'Tim')
   })
 })
+
